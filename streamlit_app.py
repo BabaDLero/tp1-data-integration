@@ -14,27 +14,67 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ── CUSTOM CSS: Dark/Light mode toggle, hover effects, modern UI ──
 AUTHOR = "RIDARD Aurelien"
+
+# ── SIDEBAR: Theme toggle FIRST (before any other content) ──
+with st.sidebar:
+    theme = st.radio(
+        "Theme d'affichage",
+        ["Clair", "Sombre"],
+        horizontal=True,
+        index=1,
+        key="theme_toggle"
+    )
+    is_dark = theme == "Sombre"
+
+# ── CUSTOM CSS with dynamic dark/light mode ──
+if is_dark:
+    bg_primary = "#0f1117"
+    bg_secondary = "#1a1d27"
+    bg_card = "#1e2130"
+    text_primary = "#e8eaed"
+    text_secondary = "#9aa0a6"
+    border_color = "#2d3040"
+    accent = "#6c8cff"
+    accent_light = "#1e2a4a"
+    header_grad = "linear-gradient(135deg, #0f1117 0%, #1a1d27 50%, #2d3040 100%)"
+    shadow = "0 2px 8px rgba(0,0,0,0.3)"
+    shadow_hover = "0 8px 24px rgba(0,0,0,0.5)"
+    table_header_bg = "#2d3040"
+    badge_crit_bg = "#3b1a1a"
+    badge_crit_fg = "#f87171"
+    badge_high_bg = "#3b2e1a"
+    badge_high_fg = "#fbbf24"
+    badge_med_bg = "#1a2a3b"
+    badge_med_fg = "#60a5fa"
+    badge_low_bg = "#1a2e1a"
+    badge_low_fg = "#34d399"
+else:
+    bg_primary = "#ffffff"
+    bg_secondary = "#f0f2f5"
+    bg_card = "#ffffff"
+    text_primary = "#1a1a2e"
+    text_secondary = "#555770"
+    border_color = "#e0e3eb"
+    accent = "#4361ee"
+    accent_light = "#eef0ff"
+    header_grad = "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)"
+    shadow = "0 2px 8px rgba(0,0,0,0.06)"
+    shadow_hover = "0 8px 24px rgba(0,0,0,0.12)"
+    table_header_bg = "#4361ee"
+    badge_crit_bg = "#fee2e2"
+    badge_crit_fg = "#dc2626"
+    badge_high_bg = "#fef3c7"
+    badge_high_fg = "#d97706"
+    badge_med_bg = "#dbeafe"
+    badge_med_fg = "#2563eb"
+    badge_low_bg = "#d1fae5"
+    badge_low_fg = "#059669"
 
 st.markdown(f"""
 <style>
-    /* Core theme variables */
-    :root {{
-        --bg-primary: #ffffff;
-        --bg-secondary: #f8f9fa;
-        --bg-card: #ffffff;
-        --text-primary: #1a1a2e;
-        --text-secondary: #495057;
-        --border-color: #e9ecef;
-        --accent: #4361ee;
-        --accent-light: #eef0ff;
-        --shadow: 0 2px 8px rgba(0,0,0,0.06);
-        --shadow-hover: 0 8px 24px rgba(0,0,0,0.12);
-    }}
-
     .main {{
-        background-color: var(--bg-secondary);
+        background-color: {bg_secondary};
     }}
 
     .block-container {{
@@ -42,9 +82,12 @@ st.markdown(f"""
         max-width: 1400px;
     }}
 
-    /* Header */
+    p, li, span, div, label {{
+        color: {text_primary};
+    }}
+
     .app-header {{
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        background: {header_grad};
         padding: 2rem 2.5rem;
         border-radius: 16px;
         margin-bottom: 2rem;
@@ -55,90 +98,101 @@ st.markdown(f"""
         font-weight: 700;
         margin: 0 0 0.3rem 0;
         letter-spacing: -0.5px;
+        color: white;
     }}
     .app-header p {{
         font-size: 1rem;
         opacity: 0.85;
         margin: 0;
+        color: #ccc;
     }}
     .app-header .author {{
         font-size: 0.85rem;
         opacity: 0.7;
         margin-top: 0.5rem;
+        color: #999;
     }}
 
-    /* Metric cards */
     .metric-card {{
-        background: var(--bg-card);
+        background: {bg_card};
         border-radius: 12px;
         padding: 1.5rem;
-        box-shadow: var(--shadow);
-        border: 1px solid var(--border-color);
+        box-shadow: {shadow};
+        border: 1px solid {border_color};
         transition: all 0.3s ease;
         cursor: default;
     }}
     .metric-card:hover {{
         transform: translateY(-2px);
-        box-shadow: var(--shadow-hover);
+        box-shadow: {shadow_hover};
     }}
     .metric-card .metric-value {{
         font-size: 2rem;
         font-weight: 700;
-        color: var(--accent);
+        color: {accent};
         margin: 0;
     }}
     .metric-card .metric-label {{
         font-size: 0.85rem;
-        color: var(--text-secondary);
+        color: {text_secondary};
         margin-top: 0.3rem;
     }}
     .metric-card .metric-detail {{
         font-size: 0.75rem;
-        color: var(--text-secondary);
+        color: {text_secondary};
         opacity: 0.7;
         margin-top: 0.5rem;
-        border-top: 1px solid var(--border-color);
+        border-top: 1px solid {border_color};
         padding-top: 0.5rem;
     }}
 
-    /* Section headers */
     .section-header {{
         font-size: 1.5rem;
         font-weight: 600;
-        color: var(--text-primary);
+        color: {text_primary};
         padding-bottom: 0.5rem;
-        border-bottom: 3px solid var(--accent);
+        border-bottom: 3px solid {accent};
         margin-bottom: 1.5rem;
         margin-top: 1rem;
     }}
 
-    /* Info cards */
     .info-card {{
-        background: var(--accent-light);
+        background: {accent_light};
         border-radius: 10px;
         padding: 1rem 1.2rem;
-        border-left: 4px solid var(--accent);
+        border-left: 4px solid {accent};
         margin: 0.8rem 0;
         font-size: 0.9rem;
+        color: {text_primary};
+    }}
+    .info-card strong {{
+        color: {accent};
     }}
 
-    /* Table styling */
+    .stDataFrame {{
+        background: {bg_card};
+    }}
     .dataframe {{
         font-size: 0.85rem !important;
     }}
     .dataframe thead tr th {{
-        background-color: var(--accent) !important;
+        background-color: {table_header_bg} !important;
         color: white !important;
         padding: 0.5rem !important;
     }}
+    .dataframe tbody tr:nth-child(even) {{
+        background-color: {bg_secondary} !important;
+    }}
+    .dataframe tbody tr {{
+        background-color: {bg_card} !important;
+    }}
 
-    /* Tab styling */
     .stTabs [data-baseweb="tab-list"] {{
         gap: 0.5rem;
-        background: var(--bg-card);
+        background: {bg_card};
         padding: 0.3rem;
         border-radius: 12px;
-        border: 1px solid var(--border-color);
+        border: 1px solid {border_color};
     }}
     .stTabs [data-baseweb="tab"] {{
         border-radius: 8px;
@@ -146,59 +200,63 @@ st.markdown(f"""
         font-size: 0.85rem;
         font-weight: 500;
         transition: all 0.2s ease;
+        color: {text_secondary};
     }}
     .stTabs [data-baseweb="tab"]:hover {{
-        background: var(--accent-light);
+        background: {accent_light};
         transform: translateY(-1px);
+        color: {accent};
     }}
     .stTabs [aria-selected="true"] {{
-        background: var(--accent) !important;
+        background: {accent} !important;
         color: white !important;
     }}
 
-    /* Expander styling */
     .streamlit-expanderHeader {{
         font-weight: 600 !important;
         border-radius: 8px !important;
         transition: all 0.2s ease !important;
+        background: {bg_card} !important;
+        border: 1px solid {border_color} !important;
     }}
     .streamlit-expanderHeader:hover {{
-        background: var(--accent-light) !important;
+        background: {accent_light} !important;
         transform: translateX(3px);
     }}
 
-    /* Select box */
     .stSelectbox [data-baseweb="select"] {{
         border-radius: 8px !important;
+        background: {bg_card} !important;
+        border-color: {border_color} !important;
     }}
     .stSelectbox [data-baseweb="select"]:hover {{
-        border-color: var(--accent) !important;
+        border-color: {accent} !important;
     }}
 
-    /* Buttons */
     .stButton button {{
         border-radius: 8px !important;
         font-weight: 500 !important;
         transition: all 0.2s ease !important;
+        background: {accent} !important;
+        color: white !important;
+        border: none !important;
     }}
     .stButton button:hover {{
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(67,97,238,0.3);
+        box-shadow: 0 4px 12px rgba(108,140,255,0.4);
     }}
 
-    /* Plotly chart container */
     .js-plotly-plot {{
         border-radius: 12px;
-        background: var(--bg-card);
+        background: {bg_card};
         padding: 0.5rem;
-        box-shadow: var(--shadow);
+        box-shadow: {shadow};
         transition: all 0.3s ease;
     }}
     .js-plotly-plot:hover {{
-        box-shadow: var(--shadow-hover);
+        box-shadow: {shadow_hover};
     }}
 
-    /* Status badges */
     .badge {{
         display: inline-block;
         padding: 0.2rem 0.6rem;
@@ -206,30 +264,56 @@ st.markdown(f"""
         font-size: 0.75rem;
         font-weight: 600;
     }}
-    .badge-critical {{ background: #fee2e2; color: #dc2626; }}
-    .badge-high {{ background: #fef3c7; color: #d97706; }}
-    .badge-medium {{ background: #dbeafe; color: #2563eb; }}
-    .badge-low {{ background: #d1fae5; color: #059669; }}
+    .badge-critical {{ background: {badge_crit_bg}; color: {badge_crit_fg}; }}
+    .badge-high {{ background: {badge_high_bg}; color: {badge_high_fg}; }}
+    .badge-medium {{ background: {badge_med_bg}; color: {badge_med_fg}; }}
+    .badge-low {{ background: {badge_low_bg}; color: {badge_low_fg}; }}
 
-    /* Footer */
     .footer {{
         text-align: center;
         padding: 2rem 0 1rem 0;
         font-size: 0.8rem;
-        color: var(--text-secondary);
+        color: {text_secondary};
         opacity: 0.6;
-        border-top: 1px solid var(--border-color);
+        border-top: 1px solid {border_color};
         margin-top: 3rem;
+    }}
+
+    .stRadio label {{
+        color: {text_primary} !important;
+    }}
+    .stRadio div[data-testid="stMarkdownContainer"] p {{
+        color: {text_secondary} !important;
+    }}
+
+    h1, h2, h3, h4, h5, h6 {{
+        color: {text_primary} !important;
+    }}
+
+    .stSidebar .sidebar-content {{
+        background: {bg_card};
+    }}
+    .stSidebar p, .stSidebar label, .stSidebar span {{
+        color: {text_secondary};
+    }}
+    .stSidebar h3 {{
+        color: {text_primary};
     }}
 </style>
 """, unsafe_allow_html=True)
+
+# ── PLOTLY THEME ──
+import plotly.io as pio
+plotly_template = "plotly_dark" if is_dark else "plotly_white"
+pio.templates.default = plotly_template
+# Also update all existing figures by setting the template globally
 
 # ── SIDEBAR ──
 with st.sidebar:
     st.markdown(f"""
     <div style="text-align:center;padding:1rem 0">
-        <div style="font-size:2rem;font-weight:700;color:var(--accent);">BAAC</div>
-        <div style="font-size:0.85rem;color:var(--text-secondary);">2024</div>
+        <div style="font-size:2rem;font-weight:700;color:{accent};">BAAC</div>
+        <div style="font-size:0.85rem;color:{text_secondary};">2024</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -240,17 +324,17 @@ with st.sidebar:
 
     st.markdown("### A propos")
     st.markdown(f"""
-    <div style="font-size:0.85rem;color:var(--text-secondary);">
-    <strong>Analyse des accidents corporels</strong> de la circulation routiere en France (2024).<br><br>
-    <strong>Auteur:</strong> {AUTHOR}<br>
-    <strong>Source:</strong> data.gouv.fr<br>
-    <strong>Dataset:</strong> BAAC 2005-2024
+    <div style="font-size:0.85rem;color:{text_secondary};">
+    <strong style="color:{text_primary};">Analyse des accidents corporels</strong> de la circulation routiere en France (2024).<br><br>
+    <strong style="color:{text_primary};">Auteur:</strong> {AUTHOR}<br>
+    <strong style="color:{text_primary};">Source:</strong> data.gouv.fr<br>
+    <strong style="color:{text_primary};">Dataset:</strong> BAAC 2005-2024
     </div>
     """, unsafe_allow_html=True)
 
     st.markdown("---")
     st.markdown("### Structure du pipeline")
-    st.markdown("""
+    st.markdown(f"""
     <div style="font-size:0.8rem;">
     <span class="badge badge-medium">Bronze</span> CSV brut<br>
     <span class="badge badge-medium">Silver</span> Parquet nettoie<br>
