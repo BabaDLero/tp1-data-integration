@@ -1,0 +1,24 @@
+# Data files (raw CSV)
+data/*.csv
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment
+.env
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Streamlit secrets
+.streamlit/secrets.toml

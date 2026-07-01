@@ -1,0 +1,107 @@
+================================================================================
+TP Data Integration And Applications
+Date: July 1, 2026
+================================================================================
+
+1: Open Data Profiling, Data Quality Analysis, Transformations, Modeling and 
+   Medallion Architecture
+
+Dataset: French Road Safety Open Data (Accidents corporels : data.gouv.fr)
+
+Jeu de données - Bases de données annuelles des accidents corporels de la 
+circulation routière - Années de 2005 à 2024 | data.gouv.fr
+
+Description of the dataset:
+https://www.data.gouv.fr/datasets/bases-de-donnees-annuelles-des-accidents-corporels-de-la-circulation-routiere-annees-de-2005-a-2024?resource_id=8ef4c2a3-91a0-4d98-ae3a-989bde87b62a
+
+================================================================================
+Part 1: Data Profiling and Data Quality Analysis
+================================================================================
+
+OBJECTIVE
+---------
+Perform a complete profiling of the dataset and evaluate its data quality.
+Quantify missingness, detect anomalies, and propose remediation strategies.
+
+INSTRUCTIONS
+------------
+You will work with the dataset provided (extracted from data.gouv.fr). Answer 
+all guided questions clearly and justify your observations.
+
+GUIDED QUESTIONS
+----------------
+
+A. Dataset Structure
+--------------------
+1. Column inventory: List all columns and their data types.
+2. Semantic meaning: Explain the meaning and purpose of each column based on 
+   the description provided.
+
+B. Missing Values and Completeness
+----------------------------------
+1. Missing percentages: Compute the percentage of missing values for each 
+   column.
+2. Critical missingness: Identify which missing values are most problematic 
+   for analysis and why.
+3. Remediation strategies: Suggest appropriate actions.
+
+C. Consistency and Validity Checks
+----------------------------------
+1. Value ranges: Identify out-of-range values or anomalies (Invalid 
+   coordinates, negative ages).
+2. Categorical anomalies: Detect unexpected or invalid categories.
+3. Duplicates: Identify and quantify duplicate records.
+
+D. Data Quality Summary
+-----------------------
+1. Quality report: Summarize the main issues discovered.
+2. Impact analysis: Explain how these issues affect downstream analytics.
+
+================================================================================
+Part 2: Transformations, Modeling and Medallion Architecture
+================================================================================
+
+OBJECTIVE
+---------
+Design the transformation pipeline based on the profiling results, propose a 
+simple analytical model, and produce a complete Medallion architecture diagram 
+(Bronze -> Silver -> Gold).
+
+A. Required Transformations (Silver Layer)
+------------------------------------------
+Based on the issues identified in Part 1, propose and justify the 
+transformations needed:
+
+1. Standardization: Normalize formats (dates, coordinates, categories).
+2. Cleaning: Correct or remove invalid values.
+3. Enrichment: Add derived fields (e.g., accident severity index, time-of-day 
+   category).
+4. Deduplication: Remove duplicate records.
+5. Documentation: Document all transformation steps clearly.
+
+B. Modeling (Gold Layer)
+------------------------
+Design a simple analytical model to support road-safety analysis.
+Suggested structure with fact table (accidents) + dimensions as location, 
+vehicle etc.
+
+C. Medallion Architecture Diagram
+---------------------------------
+Produce a complete diagram showing:
+
+- Bronze: raw open-data files
+- Silver: cleaned, standardized, enriched tables
+- Gold: analytical model (fact + dimensions)
+- BI / dashboards: final consumption layer
+
+================================================================================
+Deliverables (End of Day)
+================================================================================
+
+1. Data Profiling Report
+2. Transformation Plan (Silver layer)
+3. Analytical Model (Gold layer)
+4. Medallion Architecture Diagram
+5. Short justification of design choices
+
+================================================================================
