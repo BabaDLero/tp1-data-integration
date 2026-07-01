@@ -266,6 +266,26 @@ st.markdown(f"""
     .stSidebar h3 {{
         color: {text_primary};
     }}
+
+    /* ── Force dark mode & remove theme toggle ── */
+    [data-testid="stThemeToggle"] {{
+        display: none !important;
+    }}
+    [data-testid="stSettings"] {{
+        display: none !important;
+    }}
+    .stApp {{
+        background-color: {bg_secondary} !important;
+    }}
+    .stApp header {{
+        background-color: {bg_card} !important;
+    }}
+    section[data-testid="stSidebar"] {{
+        background-color: {bg_card} !important;
+    }}
+    section[data-testid="stMain"] {{
+        background-color: {bg_secondary} !important;
+    }}
 </style>
 """, unsafe_allow_html=True)
 
