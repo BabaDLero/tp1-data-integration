@@ -989,17 +989,17 @@ with tabs[4]:
     <div style="background:#fde4cc;border:2px solid #b45309;border-radius:12px;padding:1.5rem;">
         <div style="font-size:1.2rem;font-weight:700;color:#0d2137;margin-bottom:0.8rem;">BRONZE LAYER - Raw data</div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;">
-            <div style="background:white;border-radius:8px;padding:0.8rem;text-align:center;">
+            <div style="background:white;border-radius:8px;padding:0.8rem;text-align:center;color:#0d2137;">
                 <div style="font-weight:600;">caracteristiques.csv</div>
                 <div style="font-size:0.8rem;color:#0d2137;">54 402 lignes</div>
                 <div style="font-size:0.8rem;color:#0d2137;">15 colonnes</div>
             </div>
-            <div style="background:white;border-radius:8px;padding:0.8rem;text-align:center;">
+            <div style="background:white;border-radius:8px;padding:0.8rem;text-align:center;color:#0d2137;">
                 <div style="font-weight:600;">lieux.csv</div>
                 <div style="font-size:0.8rem;color:#0d2137;">70 248 lignes</div>
                 <div style="font-size:0.8rem;color:#0d2137;">18 colonnes</div>
             </div>
-            <div style="background:white;border-radius:8px;padding:0.8rem;text-align:center;">
+            <div style="background:white;border-radius:8px;padding:0.8rem;text-align:center;color:#0d2137;">
                 <div style="font-weight:600;">vehicules.csv</div>
                 <div style="font-size:0.8rem;color:#0d2137;">83 730 lignes</div>
                 <div style="font-size:0.8rem;color:#0d2137;">7 colonnes</div>
@@ -1020,19 +1020,19 @@ with tabs[4]:
     <div style="background:#f1f5f9;border:2px solid #64748b;border-radius:12px;padding:1.5rem;">
         <div style="font-size:1.2rem;font-weight:700;color:#0d2137;margin-bottom:0.8rem;">SILVER LAYER - Cleaned and enriched</div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;">
-            <div style="background:white;border-radius:8px;padding:0.8rem;">
+            <div style="background:white;border-radius:8px;padding:0.8rem;color:#0d2137;">
                 <div style="font-weight:600;">silver_caracteristiques</div>
                 <div style="font-size:0.8rem;color:#0d2137;">- Coordinates standardized</div>
                 <div style="font-size:0.8rem;color:#0d2137;">- Date complete construite</div>
                 <div style="font-size:0.8rem;color:#0d2137;">- Enriched: hour, season, weekday</div>
             </div>
-            <div style="background:white;border-radius:8px;padding:0.8rem;">
+            <div style="background:white;border-radius:8px;padding:0.8rem;color:#0d2137;">
                 <div style="font-weight:600;">silver_lieux</div>
                 <div style="font-size:0.8rem;color:#0d2137;">- Columns vides supprimees</div>
                 <div style="font-size:0.8rem;color:#0d2137;">- VMA corrected (outliers)</div>
                 <div style="font-size:0.8rem;color:#0d2137;">- Codes surf normalises</div>
             </div>
-            <div style="background:white;border-radius:8px;padding:0.8rem;">
+            <div style="background:white;border-radius:8px;padding:0.8rem;color:#0d2137;">
                 <div style="font-weight:600;">silver_vehicules</div>
                 <div style="font-size:0.8rem;color:#0d2137;">- Age imputed by category</div>
                 <div style="font-size:0.8rem;color:#0d2137;">- Age capped at 50</div>
@@ -1054,32 +1054,32 @@ with tabs[4]:
     <div style="background:#fef9c3;border:2px solid #eab308;border-radius:12px;padding:1.5rem;">
         <div style="font-size:1.2rem;font-weight:700;color:#0d2137;margin-bottom:0.8rem;">GOLD LAYER - Analytical model (Star Schema)</div>
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem;">
-            <div style="background:white;border-radius:8px;padding:0.6rem;text-align:center;font-size:0.8rem;">
+            <div style="background:white;border-radius:8px;padding:0.6rem;text-align:center;font-size:0.8rem;color:#0d2137;">
                 <strong>dim_date</strong><br>365 jours
             </div>
-            <div style="background:white;border-radius:8px;padding:0.6rem;text-align:center;font-size:0.8rem;">
+            <div style="background:white;border-radius:8px;padding:0.6rem;text-align:center;font-size:0.8rem;color:#0d2137;">
                 <strong>dim_time</strong><br>24 heures
             </div>
-            <div style="background:white;border-radius:8px;padding:0.6rem;text-align:center;font-size:0.8rem;">
+            <div style="background:white;border-radius:8px;padding:0.6rem;text-align:center;font-size:0.8rem;color:#0d2137;">
                 <strong>dim_location</strong><br>Departments
             </div>
-            <div style="background:white;border-radius:8px;padding:0.6rem;text-align:center;font-size:0.8rem;">
+            <div style="background:white;border-radius:8px;padding:0.6rem;text-align:center;font-size:0.8rem;color:#0d2137;">
                 <strong>dim_weather</strong><br>9 conditions
             </div>
-            <div style="background:white;border-radius:8px;padding:0.6rem;text-align:center;font-size:0.8rem;">
+            <div style="background:white;border-radius:8px;padding:0.6rem;text-align:center;font-size:0.8rem;color:#0d2137;">
                 <strong>dim_lighting</strong><br>5 eclairages
             </div>
-            <div style="background:white;border-radius:8px;padding:0.6rem;text-align:center;font-size:0.8rem;">
+            <div style="background:white;border-radius:8px;padding:0.6rem;text-align:center;font-size:0.8rem;color:#0d2137;">
                 <strong>dim_collision</strong><br>8 types
             </div>
-            <div style="background:white;border-radius:8px;padding:0.6rem;text-align:center;font-size:0.8rem;">
+            <div style="background:white;border-radius:8px;padding:0.6rem;text-align:center;font-size:0.8rem;color:#0d2137;">
                 <strong>dim_road</strong><br>Profils route
             </div>
-            <div style="background:white;border-radius:8px;padding:0.6rem;text-align:center;font-size:0.8rem;">
+            <div style="background:white;border-radius:8px;padding:0.6rem;text-align:center;font-size:0.8rem;color:#0d2137;">
                 <strong>dim_vehicle</strong><br>Categories
             </div>
         </div>
-        <div style="background:white;border-radius:8px;padding:1rem;margin-top:0.8rem;text-align:center;">
+        <div style="background:white;border-radius:8px;padding:1rem;margin-top:0.8rem;text-align:center;color:#0d2137;">
             <strong>f_accidents</strong> (Fact table) — 54 402 lignes<br>
             <span style="font-size:0.8rem;color:#0d2137;">
             Keys: date_key + time_key + location_key + weather_key + lighting_key + collision_key + road_key<br>
