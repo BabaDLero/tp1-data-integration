@@ -9,67 +9,34 @@ from datetime import datetime
 
 # ── PAGE CONFIG ──
 st.set_page_config(
-    page_title="BAAC 2024 - Analyse Securite Routiere",
+    page_title="BAAC 2024 - Road Safety Data Analysis",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 AUTHOR = "RIDARD Aurelien"
 
-# ── SIDEBAR: Theme toggle FIRST (before any other content) ──
-with st.sidebar:
-    theme = st.radio(
-        "Theme d'affichage",
-        ["Clair", "Sombre"],
-        horizontal=True,
-        index=1,
-        key="theme_toggle"
-    )
-    is_dark = theme == "Sombre"
-
-# ── CUSTOM CSS with dynamic dark/light mode ──
-if is_dark:
-    bg_primary = "#0f1117"
-    bg_secondary = "#1a1d27"
-    bg_card = "#1e2130"
-    text_primary = "#e8eaed"
-    text_secondary = "#9aa0a6"
-    border_color = "#2d3040"
-    accent = "#6c8cff"
-    accent_light = "#1e2a4a"
-    header_grad = "linear-gradient(135deg, #0f1117 0%, #1a1d27 50%, #2d3040 100%)"
-    shadow = "0 2px 8px rgba(0,0,0,0.3)"
-    shadow_hover = "0 8px 24px rgba(0,0,0,0.5)"
-    table_header_bg = "#2d3040"
-    badge_crit_bg = "#3b1a1a"
-    badge_crit_fg = "#f87171"
-    badge_high_bg = "#3b2e1a"
-    badge_high_fg = "#fbbf24"
-    badge_med_bg = "#1a2a3b"
-    badge_med_fg = "#60a5fa"
-    badge_low_bg = "#1a2e1a"
-    badge_low_fg = "#34d399"
-else:
-    bg_primary = "#ffffff"
-    bg_secondary = "#f0f2f5"
-    bg_card = "#ffffff"
-    text_primary = "#1a1a2e"
-    text_secondary = "#555770"
-    border_color = "#e0e3eb"
-    accent = "#4361ee"
-    accent_light = "#eef0ff"
-    header_grad = "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)"
-    shadow = "0 2px 8px rgba(0,0,0,0.06)"
-    shadow_hover = "0 8px 24px rgba(0,0,0,0.12)"
-    table_header_bg = "#4361ee"
-    badge_crit_bg = "#fee2e2"
-    badge_crit_fg = "#dc2626"
-    badge_high_bg = "#fef3c7"
-    badge_high_fg = "#d97706"
-    badge_med_bg = "#dbeafe"
-    badge_med_fg = "#2563eb"
-    badge_low_bg = "#d1fae5"
-    badge_low_fg = "#059669"
+# ── CUSTOM CSS: Dark theme only ──
+bg_primary = "#0f1117"
+bg_secondary = "#1a1d27"
+bg_card = "#1e2130"
+text_primary = "#e8eaed"
+text_secondary = "#9aa0a6"
+border_color = "#2d3040"
+accent = "#6c8cff"
+accent_light = "#1e2a4a"
+header_grad = "linear-gradient(135deg, #0f1117 0%, #1a1d27 50%, #2d3040 100%)"
+shadow = "0 2px 8px rgba(0,0,0,0.3)"
+shadow_hover = "0 8px 24px rgba(0,0,0,0.5)"
+table_header_bg = "#2d3040"
+badge_crit_bg = "#3b1a1a"
+badge_crit_fg = "#f87171"
+badge_high_bg = "#3b2e1a"
+badge_high_fg = "#fbbf24"
+badge_med_bg = "#1a2a3b"
+badge_med_fg = "#60a5fa"
+badge_low_bg = "#1a2e1a"
+badge_low_fg = "#34d399"
 
 st.markdown(f"""
 <style>
@@ -302,10 +269,9 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-# ── PLOTLY THEME ──
+# ── PLOTLY THEME (dark) ──
 import plotly.io as pio
-plotly_template = "plotly_dark" if is_dark else "plotly_white"
-pio.templates.default = plotly_template
+pio.templates.default = "plotly_dark"
 # Also update all existing figures by setting the template globally
 
 # ── SIDEBAR ──
@@ -319,26 +285,26 @@ with st.sidebar:
 
     st.markdown("---")
 
-    if st.button("Actualiser les donnees", use_container_width=True):
+    if st.button("Refresh data", use_container_width=True):
         st.cache_data.clear()
 
-    st.markdown("### A propos")
+    st.markdown("### About")
     st.markdown(f"""
     <div style="font-size:0.85rem;color:{text_secondary};">
-    <strong style="color:{text_primary};">Analyse des accidents corporels</strong> de la circulation routiere en France (2024).<br><br>
-    <strong style="color:{text_primary};">Auteur:</strong> {AUTHOR}<br>
+    <strong style="color:{text_primary};">Road accident analysis</strong> for France metropolitan and overseas territories (2024).<br><br>
+    <strong style="color:{text_primary};">Author:</strong> {AUTHOR}<br>
     <strong style="color:{text_primary};">Source:</strong> data.gouv.fr<br>
     <strong style="color:{text_primary};">Dataset:</strong> BAAC 2005-2024
     </div>
     """, unsafe_allow_html=True)
 
     st.markdown("---")
-    st.markdown("### Structure du pipeline")
+    st.markdown("### Pipeline layers")
     st.markdown(f"""
     <div style="font-size:0.8rem;">
-    <span class="badge badge-medium">Bronze</span> CSV brut<br>
-    <span class="badge badge-medium">Silver</span> Parquet nettoie<br>
-    <span class="badge badge-medium">Gold</span> Modele analytique<br>
+    <span class="badge badge-medium">Bronze</span> Raw CSV<br>
+    <span class="badge badge-medium">Silver</span> Cleaned Parquet<br>
+    <span class="badge badge-medium">Gold</span> Analytical model<br>
     <span class="badge badge-medium">BI</span> Dashboards
     </div>
     """, unsafe_allow_html=True)
@@ -346,9 +312,9 @@ with st.sidebar:
 # ── HEADER ──
 st.markdown(f"""
 <div class="app-header">
-    <h1>Analyse des Accidents de la Route - France 2024</h1>
-    <p>Dataset BAAC : Profilage, Qualite des donnees, Architecture Medallion</p>
-    <div class="author">Par {AUTHOR} | Data Integration TP | Juillet 2026</div>
+    <h1>French Road Safety Analysis - 2024</h1>
+    <p>BAAC Dataset: Profiling, Data Quality, Medallion Architecture</p>
+    <div class="author">By {AUTHOR} | Data Integration TP | July 2026</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -396,26 +362,26 @@ carac['hour'] = pd.to_numeric(carac['hour'], errors='coerce')
 
 # ── TABS ──
 tabs = st.tabs([
-    "Structure des donnees",
-    "Valeurs manquantes",
-    "Qualite des donnees",
-    "Visualisations",
-    "Architecture Medallion",
-    "Rapport complet"
+    "Data Structure",
+    "Missing Values",
+    "Data Quality",
+    "Visualizations",
+    "Medallion Architecture",
+    "Full Report"
 ])
 
 # ════════════════════════════════════════════════════════════════════════
 # TAB 1: DATA STRUCTURE
 # ════════════════════════════════════════════════════════════════════════
 with tabs[0]:
-    st.markdown('<div class="section-header">Inventaire des colonnes</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header">Column Inventory</div>', unsafe_allow_html=True)
 
     kpi_cols = st.columns(4)
     with kpi_cols[0]:
         st.markdown(f"""
         <div class="metric-card">
             <div class="metric-value">{carac.shape[0]:,}</div>
-            <div class="metric-label">Accidents (caracteristiques)</div>
+            <div class="metric-label">Accidents (characteristics)</div>
             <div class="metric-detail">{carac.shape[1]} colonnes</div>
         </div>
         """, unsafe_allow_html=True)
@@ -423,7 +389,7 @@ with tabs[0]:
         st.markdown(f"""
         <div class="metric-card">
             <div class="metric-value">{lieux.shape[0]:,}</div>
-            <div class="metric-label">Troncons routiers (lieux)</div>
+            <div class="metric-label">Road segments (lieux)</div>
             <div class="metric-detail">{lieux.shape[1]} colonnes • {lieux['Num_Acc'].nunique():,} accidents lies</div>
         </div>
         """, unsafe_allow_html=True)
@@ -431,7 +397,7 @@ with tabs[0]:
         st.markdown(f"""
         <div class="metric-card">
             <div class="metric-value">{vehicules.shape[0]:,}</div>
-            <div class="metric-label">Vehicules impliques</div>
+            <div class="metric-label">Vehicles involved</div>
             <div class="metric-detail">{vehicules.shape[1]} colonnes • {vehicules['Age_vehicule'].mean():.1f} ans moyen</div>
         </div>
         """, unsafe_allow_html=True)
@@ -440,26 +406,26 @@ with tabs[0]:
         st.markdown(f"""
         <div class="metric-card">
             <div class="metric-value">{ratio:.2f}</div>
-            <div class="metric-label">Troncons / Accident</div>
-            <div class="metric-detail">Certains accidents couvrent plusieurs troncons</div>
+            <div class="metric-label">Segments / Accident</div>
+            <div class="metric-detail">Some accidents span multiple road segments</div>
         </div>
         """, unsafe_allow_html=True)
 
     for title, df, desc, rename_map in [
-        ("Caracteristiques des accidents", carac,
+        ("Accident characteristics", carac,
          "Informations temporelles, meteorologiques et de localisation des accidents.",
-         {'lat': 'Latitude', 'long': 'Longitude', 'lum': 'Eclairage', 'atm': 'Meteo',
-          'col': 'Collision', 'agg': 'Agglomeration', 'int': 'Intersection',
+         {'lat': 'Latitude', 'long': 'Longitude', 'lum': 'Lighting', 'atm': 'Weather',
+          'col': 'Collision', 'agg': 'Urban area', 'int': 'Intersection',
           'hrmn': 'Heure', 'jour': 'Jour', 'mois': 'Mois', 'an': 'Annee',
-          'dep': 'Departement', 'com': 'Commune', 'adr': 'Adresse'}),
-        ("Details des lieux", lieux,
+          'dep': 'Department', 'com': 'Commune', 'adr': 'Adresse'}),
+        ("Location details", lieux,
          "Caracteristiques detaillees de la voie et de l'environnement routier.",
          {'catr': 'CategorieRoute', 'voie': 'NomVoie', 'circ': 'Circulation',
           'nbv': 'NbVoies', 'vosp': 'VoieReservee', 'prof': 'Profil',
           'plan': 'Trace', 'surf': 'Surface', 'infra': 'Infrastructure',
           'situ': 'Situation', 'vma': 'VitesseMax', 'larrout': 'LargeurRoute',
           'pr': 'PR', 'pr1': 'PR1'}),
-        ("Informations des vehicules", vehicules,
+        ("Vehicle information", vehicules,
          "Details sur les vehicules impliques dans les accidents.",
          {'Lettre_Conventionnelle_Vehicule': 'LettreVehicule', 'Categorie_vehicule': 'Categorie',
           'Age_vehicule': 'Age', 'Territoire': 'Territoire', 'CNIT': 'NumChassis'})
@@ -467,24 +433,24 @@ with tabs[0]:
         with st.expander(f"{title} ({df.shape[1]} colonnes, {df.shape[0]:,} lignes)"):
             st.markdown(f'<div class="info-card">{desc}</div>', unsafe_allow_html=True)
             info = pd.DataFrame({
-                'Colonne': df.columns,
+                'Column': df.columns,
                 'Type': df.dtypes.astype(str).str.replace('int64','Entier').str.replace('float64','Decimal').str.replace('object','Texte'),
-                'Valeurs non-nulles': df.shape[0] - df.isna().sum().values,
-                '% Remplissage': (100 - df.isna().sum().values / df.shape[0] * 100).round(1),
-                'Valeurs uniques': [df[c].nunique() for c in df.columns]
+                'Non-null count': df.shape[0] - df.isna().sum().values,
+                '% Fill': (100 - df.isna().sum().values / df.shape[0] * 100).round(1),
+                'Unique values': [df[c].nunique() for c in df.columns]
             })
             st.dataframe(info, use_container_width=True, hide_index=True,
                          column_config={
-                             'Colonne': st.column_config.TextColumn(width='medium'),
+                             'Column': st.column_config.TextColumn(width='medium'),
                              'Type': st.column_config.TextColumn(width='small'),
-                             '% Remplissage': st.column_config.ProgressColumn(format='%.1f%%', min_value=0, max_value=100)
+                             '% Fill': st.column_config.ProgressColumn(format='%.1f%%', min_value=0, max_value=100)
                          })
 
 # ════════════════════════════════════════════════════════════════════════
 # TAB 2: MISSING VALUES
 # ════════════════════════════════════════════════════════════════════════
 with tabs[1]:
-    st.markdown('<div class="section-header">Analyse des valeurs manquantes</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header">Missing Values Analysis</div>', unsafe_allow_html=True)
 
     col_missing = st.columns(2)
     tables_missing = [
@@ -509,7 +475,7 @@ with tabs[1]:
                 ))
                 fig.update_layout(
                     title=f'{name}',
-                    xaxis_title='% Valeurs manquantes',
+                    xaxis_title='% Missing',
                     height=250 + len(missing_pct) * 25,
                     margin=dict(l=10, r=30, t=40, b=10),
                     xaxis=dict(range=[0, min(105, missing_pct.max() * 1.2)]),
@@ -518,19 +484,19 @@ with tabs[1]:
                 )
                 st.plotly_chart(fig, use_container_width=True)
             else:
-                st.info(f'{name} : aucune valeur manquante')
+                st.info(f'{name} : no missing values')
 
-    st.markdown('<div class="section-header">Matrice critique des valeurs manquantes</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header">Critical Missingness Matrix</div>', unsafe_allow_html=True)
     st.markdown("""
     <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
         <thead>
             <tr style="background:#1a1a2e;color:white;">
-                <th style="padding:0.6rem;text-align:left;">Colonne</th>
+                <th style="padding:0.6rem;text-align:left;">Column</th>
                 <th style="padding:0.6rem;text-align:left;">Table</th>
                 <th style="padding:0.6rem;text-align:right;">Manquants</th>
                 <th style="padding:0.6rem;text-align:right;">%</th>
-                <th style="padding:0.6rem;text-align:center;">Severite</th>
-                <th style="padding:0.6rem;text-align:left;">Action recommandee</th>
+                <th style="padding:0.6rem;text-align:center;">Severity</th>
+                <th style="padding:0.6rem;text-align:left;">Recommended action</th>
             </tr>
         </thead>
         <tbody>
@@ -538,13 +504,13 @@ with tabs[1]:
                 <td style="padding:0.5rem;">lartpc</td><td>lieux</td>
                 <td style="text-align:right;">70,215</td><td style="text-align:right;color:#ef4444;font-weight:600;">99.95%</td>
                 <td style="text-align:center;"><span class="badge badge-critical">CRITIQUE</span></td>
-                <td>Supprimer la colonne (aucune valeur exploitable)</td>
+                <td>Drop column (no usable data)</td>
             </tr>
             <tr style="border-bottom:1px solid #e9ecef;">
                 <td style="padding:0.5rem;">v2</td><td>lieux</td>
                 <td style="text-align:right;">64,332</td><td style="text-align:right;color:#ef4444;font-weight:600;">91.58%</td>
                 <td style="text-align:center;"><span class="badge badge-critical">CRITIQUE</span></td>
-                <td>Supprimer ou archiver</td>
+                <td>Drop or archive</td>
             </tr>
             <tr style="border-bottom:1px solid #e9ecef;">
                 <td style="padding:0.5rem;">CNIT (VIN)</td><td>vehicules</td>
@@ -556,19 +522,19 @@ with tabs[1]:
                 <td style="padding:0.5rem;">voie</td><td>lieux</td>
                 <td style="text-align:right;">13,331</td><td style="text-align:right;color:#f59e0b;font-weight:600;">18.98%</td>
                 <td style="text-align:center;"><span class="badge badge-high">ELEVE</span></td>
-                <td>Enrichir par geocodage inverse</td>
+                <td>Enrich via reverse geocoding</td>
             </tr>
             <tr style="border-bottom:1px solid #e9ecef;">
                 <td style="padding:0.5rem;">Age vehicule</td><td>vehicules</td>
                 <td style="text-align:right;">5,395</td><td style="text-align:right;color:#3b82f6;font-weight:600;">6.44%</td>
                 <td style="text-align:center;"><span class="badge badge-medium">MOYEN</span></td>
-                <td>Imputer par la mediane par categorie</td>
+                <td>Impute by category median</td>
             </tr>
             <tr>
                 <td style="padding:0.5rem;">adr</td><td>caracteristiques</td>
                 <td style="text-align:right;">2,310</td><td style="text-align:right;color:#10b981;font-weight:600;">4.25%</td>
                 <td style="text-align:center;"><span class="badge badge-low">FAIBLE</span></td>
-                <td>Geocodage inverse depuis lat/long</td>
+                <td>Reverse geocode from lat/lng</td>
             </tr>
         </tbody>
     </table>
@@ -578,13 +544,13 @@ with tabs[1]:
 # TAB 3: DATA QUALITY
 # ════════════════════════════════════════════════════════════════════════
 with tabs[2]:
-    st.markdown('<div class="section-header">Controles de qualite</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header">Quality Checks</div>', unsafe_allow_html=True)
 
     q_cols = st.columns(3)
     with q_cols[0]:
         st.markdown("""
         <div class="metric-card">
-            <div class="metric-label" style="font-size:0.9rem;font-weight:600;">Coordonnees geographiques</div>
+            <div class="metric-label" style="font-size:0.9rem;font-weight:600;">Geographic coordinates</div>
             <div style="margin-top:0.8rem;">
         """, unsafe_allow_html=True)
 
@@ -627,14 +593,14 @@ with tabs[2]:
     with q_cols[1]:
         st.markdown("""
         <div class="metric-card">
-            <div class="metric-label" style="font-size:0.9rem;font-weight:600;">Codes invalides</div>
+            <div class="metric-label" style="font-size:0.9rem;font-weight:600;">Invalid codes</div>
         """, unsafe_allow_html=True)
 
         invalid_items = [
             ("col = -1", int((carac['col'] == -1).sum()), "#ef4444"),
-            ("surf invalide (-1,8,9)", int(lieux['surf'].isin([-1, 8, 9]).sum()), "#ef4444"),
-            ("vma = -1 (inconnu)", int((lieux['vma'] == -1).sum()), "#f59e0b"),
-            ("vma > 150 (aberrant)", int((lieux['vma'] > 150).sum()), "#ef4444"),
+            ("surf invalid (-1,8,9)", int(lieux['surf'].isin([-1, 8, 9]).sum()), "#ef4444"),
+            ("vma = -1 (unknown)", int((lieux['vma'] == -1).sum()), "#f59e0b"),
+            ("vma > 150 (outlier)", int((lieux['vma'] > 150).sum()), "#ef4444"),
         ]
         for label, val, color in invalid_items:
             st.markdown(f"""
@@ -649,7 +615,7 @@ with tabs[2]:
     with q_cols[2]:
         st.markdown("""
         <div class="metric-card">
-            <div class="metric-label" style="font-size:0.9rem;font-weight:600;">Valeurs negatives</div>
+            <div class="metric-label" style="font-size:0.9rem;font-weight:600;">Negative values</div>
         """, unsafe_allow_html=True)
 
         lieux['pr_num'] = pd.to_numeric(lieux['pr'], errors='coerce')
@@ -657,9 +623,9 @@ with tabs[2]:
         lieux['larrout_num'] = pd.to_numeric(lieux['larrout'], errors='coerce')
 
         neg_items = [
-            ("pr (point de reference)", int((lieux['pr_num'] < 0).sum()), "#f59e0b"),
-            ("pr1 (distance PR)", int((lieux['pr1_num'] < 0).sum()), "#f59e0b"),
-            ("larrout (largeur route)", int((lieux['larrout_num'] < 0).sum()), "#ef4444"),
+            ("pr (reference point)", int((lieux['pr_num'] < 0).sum()), "#f59e0b"),
+            ("pr1 (PR distance)", int((lieux['pr1_num'] < 0).sum()), "#f59e0b"),
+            ("larrout (road width)", int((lieux['larrout_num'] < 0).sum()), "#ef4444"),
             ("Age vehicule < 0", 0, "#10b981"),
         ]
         for label, val, color in neg_items:
@@ -674,30 +640,30 @@ with tabs[2]:
 
     st.markdown("""
     <div class="info-card">
-        <strong>Impact sur l'analyse :</strong> Les valeurs aberrantes (vma > 150, col = -1) doivent etre filtrees avant toute analyse.
+        <strong>Impact on analysis:</strong> Les valeurs aberrantes (vma > 150, col = -1) doivent etre filtrees avant toute analyse.
         Les valeurs negatives de PR et PR1 codent une absence d'information et peuvent etre transformees en NaN.
         La largeur de route negative (69% des enregistrements) rend cette colonne inexploitable en l'etat.
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown('<div class="section-header">Distributions categorielles</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header">Categorical Distributions</div>', unsafe_allow_html=True)
     col_cat = st.selectbox(
-        "Selectionner une colonne categorielle",
+        "Select a categorical column",
         ['lum', 'atm', 'col', 'agg', 'int'],
-        format_func=lambda x: {'lum': 'Eclairage', 'atm': 'Meteo', 'col': 'Collision',
-                                'agg': 'Agglomeration', 'int': 'Intersection'}.get(x, x)
+        format_func=lambda x: {'lum': 'Lighting', 'atm': 'Weather', 'col': 'Collision',
+                                'agg': 'Urban area', 'int': 'Intersection'}.get(x, x)
     )
 
     labels_map = {
-        'lum': {1:'Plein jour', 2:'Crepuscule', 3:'Nuit sans eclairage',
-                4:'Nuit eclairage allume', 5:'Nuit eclairage eteint'},
-        'atm': {1:'Normale', 2:'Pluie legere', 3:'Pluie forte', 4:'Neige',
-                5:'Brouillard', 6:'Vent fort', 7:'Eblouissement', 8:'Temps couvert', 9:'Autre'},
-        'col': {-1:'Inconnu', 1:'Frontale', 2:'Meme sens', 3:'Perpendiculaire',
-                4:'Oppose', 5:'En chaine', 6:'Multiples collisions', 7:'Autre', 8:'Sans collision'},
-        'agg': {1:'Hors agglomeration', 2:'En agglomeration'},
-        'int': {1:'Hors intersection', 2:'Croix', 3:'T', 4:'Y', 5:'Giratoire',
-                6:'Place', 7:'Passage niveau', 8:'Autre', 9:'Non renseigne'}
+        'lum': {1:'Daylight', 2:'Twilight', 3:'Night no lighting',
+                4:'Night lighting on', 5:'Night lighting off'},
+        'atm': {1:'Normale', 2:'Light rain', 3:'Heavy rain', 4:'Snow',
+                5:'Fog', 6:'Strong wind', 7:'Glare', 8:'Cloudy', 9:'Autre'},
+        'col': {-1:'Inconnu', 1:'Frontal', 2:'Same direction', 3:'Perpendicular',
+                4:'Opposite', 5:'Chain', 6:'Multiple collisions', 7:'Autre', 8:'No collision'},
+        'agg': {1:'Outside urban area', 2:'Inside urban area'},
+        'int': {1:'Not intersection', 2:'Cross', 3:'T', 4:'Y', 5:'Roundabout',
+                6:'Square', 7:'Level crossing', 8:'Autre', 9:'Not specified'}
     }
 
     if col_cat in carac.columns:
@@ -708,7 +674,7 @@ with tabs[2]:
         vc_pct = (vc / total * 100).round(1)
 
         fig = make_subplots(rows=1, cols=2, specs=[[{"type": "bar"}, {"type": "pie"}]],
-                            subplot_titles=("Distribution (effectifs)", "Repartition (%)"))
+                            subplot_titles=("Distribution (counts)", "Share (%)"))
 
         fig.add_trace(go.Bar(
             x=vc.index, y=vc.values,
@@ -739,15 +705,15 @@ with tabs[3]:
     st.markdown('<div class="section-header">Exploration visuelle</div>', unsafe_allow_html=True)
 
     viz_type = st.radio(
-        "Selectionner une visualisation",
-        ["Accidents par heure", "Conditions meteorologiques",
-         "Types de collision", "Categories de vehicules",
-         "Limitations de vitesse", "Carte des accidents",
-         "Repartition geographique", "Age des vehicules"],
+        "Select a visualization",
+        ["Accidents by Hour", "Weather Conditions",
+         "Collision Types", "Vehicle Categories",
+         "Speed Limits", "Accident Map",
+         "Geographic Distribution", "Vehicle Age"],
         horizontal=True
     )
 
-    if viz_type == "Accidents par heure":
+    if viz_type == "Accidents by Hour":
         carac['hour'] = pd.to_numeric(carac['hour'], errors='coerce')
         hour_counts = carac['hour'].value_counts().sort_index().reindex(range(24), fill_value=0)
 
@@ -763,7 +729,7 @@ with tabs[3]:
         fig.add_vline(x=17, line_dash="dash", line_color="#f59e0b",
                       annotation_text="Pic soir (17h)", annotation_position="top right")
         fig.update_layout(
-            title='Accidents par heure de la journee',
+            title='Accidents by Hour de la journee',
             xaxis=dict(tickmode='linear', tick0=0, dtick=2, title='Heure'),
             yaxis=dict(title="Nombre d'accidents"),
             height=450,
@@ -778,26 +744,26 @@ with tabs[3]:
         <div style="display:flex;gap:1rem;flex-wrap:wrap;">
             <div class="metric-card" style="flex:1;">
                 <div class="metric-value">{avg_hour:.1f}h</div>
-                <div class="metric-label">Heure moyenne des accidents</div>
+                <div class="metric-label">Average accident hour</div>
             </div>
             <div class="metric-card" style="flex:1;">
                 <div class="metric-value">{peak_hour}h</div>
-                <div class="metric-label">Heure de pic {hour_counts[peak_hour]:,} accidents</div>
+                <div class="metric-label">Peak hour {hour_counts[peak_hour]:,} accidents</div>
             </div>
             <div class="metric-card" style="flex:1;">
                 <div class="metric-value">{hour_counts.loc[7:9].sum():,}</div>
-                <div class="metric-label">Accidents en heure de pointe matinale (7h-9h)</div>
+                <div class="metric-label">Morning peak accidents (7-9 AM)</div>
             </div>
             <div class="metric-card" style="flex:1;">
                 <div class="metric-value">{hour_counts.loc[16:19].sum():,}</div>
-                <div class="metric-label">Accidents en heure de pointe soir (16h-19h)</div>
+                <div class="metric-label">Evening peak accidents (4-7 PM)</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
-    elif viz_type == "Conditions meteorologiques":
-        labels = {1:'Normale', 2:'Pluie legere', 3:'Pluie forte', 4:'Neige',
-                  5:'Brouillard', 6:'Vent fort', 7:'Eblouissement', 8:'Couvert', 9:'Autre'}
+    elif viz_type == "Weather Conditions":
+        labels = {1:'Normale', 2:'Light rain', 3:'Heavy rain', 4:'Snow',
+                  5:'Fog', 6:'Strong wind', 7:'Glare', 8:'Couvert', 9:'Autre'}
         vc = carac['atm'].value_counts().sort_index()
         vc.index = [labels.get(i, str(i)) for i in vc.index]
 
@@ -817,7 +783,7 @@ with tabs[3]:
             text=vc.values, textposition='outside',
             hovertemplate='%{y}: %{x} accidents<extra></extra>'
         ), row=1, col=2)
-        fig.update_layout(height=450, title='Repartition par conditions meteorologiques', showlegend=False)
+        fig.update_layout(height=450, title='Distribution by Weather Conditions', showlegend=False)
         st.plotly_chart(fig, use_container_width=True)
 
         normal_pct = vc.iloc[0] / vc.sum() * 100
@@ -828,9 +794,9 @@ with tabs[3]:
         </div>
         """, unsafe_allow_html=True)
 
-    elif viz_type == "Types de collision":
-        labels = {-1:'Inconnu', 1:'Frontale', 2:'Meme sens', 3:'Perpendiculaire',
-                  4:'Oppose', 5:'En chaine', 6:'Multiples', 7:'Autre', 8:'Sans collision'}
+    elif viz_type == "Collision Types":
+        labels = {-1:'Inconnu', 1:'Frontal', 2:'Same direction', 3:'Perpendicular',
+                  4:'Opposite', 5:'Chain', 6:'Multiples', 7:'Autre', 8:'No collision'}
         vc = carac['col'].value_counts().sort_index()
         vc.index = [labels.get(i, str(i)) for i in vc.index]
 
@@ -838,13 +804,13 @@ with tabs[3]:
             x=vc.index, y=vc.values, color=vc.values,
             color_continuous_scale='turbo',
             labels={'x': 'Type de collision', 'y': "Nombre d'accidents"},
-            title='Types de collision'
+            title='Collision Types'
         )
         fig.update_traces(hovertemplate='%{x}<br>%{y} accidents<extra></extra>')
         fig.update_layout(height=450, coloraxis_showscale=False)
         st.plotly_chart(fig, use_container_width=True)
 
-    elif viz_type == "Categories de vehicules":
+    elif viz_type == "Vehicle Categories":
         cat_col = 'Categorie_vehicule'
         vc = vehicules[cat_col].value_counts()
         colors = px.colors.qualitative.Plotly[:len(vc)]
@@ -865,14 +831,14 @@ with tabs[3]:
         fig.update_layout(height=450, showlegend=False)
         st.plotly_chart(fig, use_container_width=True)
 
-    elif viz_type == "Limitations de vitesse":
+    elif viz_type == "Speed Limits":
         valid_vma = lieux[lieux['vma'].between(0, 150)]
         invalid_vma = lieux[~lieux['vma'].between(0, 150)]
 
         fig = make_subplots(
             rows=1, cols=2,
             specs=[[{"type": "histogram"}, {"type": "box"}]],
-            subplot_titles=("Distribution des vitesses maximales", "Box plot")
+            subplot_titles=("Speed Limit Distribution", "Box plot")
         )
         fig.add_trace(go.Histogram(
             x=valid_vma['vma'], nbinsx=30,
@@ -892,29 +858,29 @@ with tabs[3]:
         <div style="display:flex;gap:1rem;flex-wrap:wrap;">
             <div class="metric-card" style="flex:1;">
                 <div class="metric-value">{valid_vma['vma'].mode().values[0]} km/h</div>
-                <div class="metric-label">Vitesse limite la plus frequente</div>
+                <div class="metric-label">Most common speed limit</div>
             </div>
             <div class="metric-card" style="flex:1;">
                 <div class="metric-value">{valid_vma['vma'].mean():.0f} km/h</div>
-                <div class="metric-label">Vitesse limite moyenne</div>
+                <div class="metric-label">Average speed limit</div>
             </div>
             <div class="metric-card" style="flex:1;">
                 <div class="metric-value">{invalid_vma.shape[0]:,}</div>
-                <div class="metric-label">Troncons avec VMA invalide</div>
+                <div class="metric-label">Segments with invalid VMA</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
-    elif viz_type == "Carte des accidents":
+    elif viz_type == "Accident Map":
         st.markdown('<div class="info-card">Carte interactive des accidents en France metropolitaine (echantillon de 5 000 points pour la performance).</div>', unsafe_allow_html=True)
 
         map_filter = st.selectbox(
-            "Filtrer par condition d'eclairage",
-            ["Tous", "Plein jour", "Crepuscule", "Nuit sans eclairage",
-             "Nuit eclairage allume", "Nuit eclairage eteint"]
+            "Filter by lighting condition",
+            ["All", "Daylight", "Twilight", "Night no lighting",
+             "Night lighting on", "Night lighting off"]
         )
-        lum_map = {"Tous": None, "Plein jour": 1, "Crepuscule": 2, "Nuit sans eclairage": 3,
-                   "Nuit eclairage allume": 4, "Nuit eclairage eteint": 5}
+        lum_map = {"All": None, "Daylight": 1, "Twilight": 2, "Night no lighting": 3,
+                   "Night lighting on": 4, "Night lighting off": 5}
 
         map_data = carac[carac['lat_num'].between(41, 52) & carac['long_num'].between(-5, 10)].copy()
         if lum_map[map_filter] is not None:
@@ -927,45 +893,45 @@ with tabs[3]:
 
         fig = px.scatter_map(
             map_data, lat='lat_num', lon='long_num',
-            color='lum' if map_filter == "Tous" else None,
+            color='lum' if map_filter == "All" else None,
             opacity=0.6, zoom=5, height=600,
             title=f'Accidents 2024 - {map_filter} ({len(map_data):,} points)',
-            labels={'lum': 'Eclairage'},
-            color_continuous_scale=px.colors.sequential.Plasma if map_filter == "Tous" else None,
+            labels={'lum': 'Lighting'},
+            color_continuous_scale=px.colors.sequential.Plasma if map_filter == "All" else None,
             hover_data={'Num_Acc': True, 'lat_num': False, 'long_num': False}
         )
         fig.update_layout(margin=dict(t=30, b=0, l=0, r=0))
         st.plotly_chart(fig, use_container_width=True)
 
-    elif viz_type == "Repartition geographique":
+    elif viz_type == "Geographic Distribution":
         dept_counts = carac['dep'].value_counts().head(20)
 
         fig = px.bar(
             x=dept_counts.index, y=dept_counts.values,
             color=dept_counts.values,
             color_continuous_scale='magma',
-            labels={'x': 'Departement', 'y': "Nombre d'accidents"},
-            title='Top 20 des departements les plus accidentogenes'
+            labels={'x': 'Department', 'y': "Nombre d'accidents"},
+            title='Top 20 most accident-prone departments'
         )
         fig.update_traces(hovertemplate='Dep %{x}<br>%{y} accidents<extra></extra>')
         fig.update_layout(height=450, coloraxis_showscale=False)
         st.plotly_chart(fig, use_container_width=True)
 
-        urban_counts = carac['agg'].map({1: 'Hors agglomeration', 2: 'En agglomeration'}).value_counts()
+        urban_counts = carac['agg'].map({1: 'Outside urban area', 2: 'Inside urban area'}).value_counts()
         fig2 = px.pie(
             values=urban_counts.values, names=urban_counts.index,
-            hole=0.4, title='Accidents en/hors agglomeration',
+            hole=0.4, title='Inside/Outside Urban Area',
             color_discrete_sequence=['#4361ee', '#f59e0b']
         )
         fig2.update_traces(hovertemplate='%{label}: %{value} (%{percent})<extra></extra>')
         st.plotly_chart(fig2, use_container_width=True)
 
-    elif viz_type == "Age des vehicules":
+    elif viz_type == "Vehicle Age":
         age_col = 'Age_vehicule'
         valid_age = vehicules[vehicules[age_col].between(0, 50)].copy()
 
         fig = make_subplots(rows=1, cols=2, specs=[[{"type": "histogram"}, {"type": "box"}]],
-                            subplot_titles=("Distribution de l'age des vehicules", "Box plot"))
+                            subplot_titles=("Vehicle Age Distribution", "Box plot"))
         fig.add_trace(go.Histogram(
             x=valid_age[age_col], nbinsx=40,
             marker_color='#4361ee',
@@ -985,7 +951,7 @@ with tabs[3]:
         fig2 = px.bar(
             x=age_dist.index, y=age_dist.values,
             color=age_dist.values, color_continuous_scale='viridis',
-            labels={'x': "Tranche d'age", 'y': 'Nombre de vehicules'},
+            labels={'x': "Age range", 'y': 'Number of vehicles'},
             title='Repartition par tranche d\'age des vehicules'
         )
         fig2.update_layout(height=400, coloraxis_showscale=False)
@@ -1001,7 +967,7 @@ with tabs[4]:
     <div style="display:flex;flex-direction:column;gap:1rem;font-family:monospace;">
 
     <div style="background:#fef3c7;border:2px solid #f59e0b;border-radius:12px;padding:1.5rem;">
-        <div style="font-size:1.2rem;font-weight:700;color:#92400e;margin-bottom:0.8rem;">COUCHE BRONZE - Donnees brutes</div>
+        <div style="font-size:1.2rem;font-weight:700;color:#92400e;margin-bottom:0.8rem;">BRONZE LAYER - Raw data</div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;">
             <div style="background:white;border-radius:8px;padding:0.8rem;text-align:center;">
                 <div style="font-weight:600;">caracteristiques.csv</div>
@@ -1021,35 +987,35 @@ with tabs[4]:
         </div>
         <div style="text-align:center;margin-top:0.8rem;">
             <span class="badge badge-medium">Format: CSV</span>
-            <span class="badge badge-medium">Stockage: /bronze/baac/2024/</span>
+            <span class="badge badge-medium">Storage: /bronze/baac/2024/</span>
         </div>
     </div>
 
     <div style="display:flex;justify-content:center;">
         <div style="background:#1a1a2e;color:white;padding:0.6rem 1.5rem;border-radius:8px;font-size:0.85rem;">
-            Controles de qualite : Schema validation | Detection valeurs manquantes | Suppression outliers | Conversion formats
+            Quality Checks : Schema validation | Detection valeurs manquantes | Suppression outliers | Conversion formats
         </div>
     </div>
 
     <div style="background:#dbeafe;border:2px solid #3b82f6;border-radius:12px;padding:1.5rem;">
-        <div style="font-size:1.2rem;font-weight:700;color:#1e40af;margin-bottom:0.8rem;">COUCHE SILVER - Donnees nettoyees et enrichies</div>
+        <div style="font-size:1.2rem;font-weight:700;color:#1e40af;margin-bottom:0.8rem;">SILVER LAYER - Cleaned and enriched</div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;">
             <div style="background:white;border-radius:8px;padding:0.8rem;">
                 <div style="font-weight:600;">silver_caracteristiques</div>
-                <div style="font-size:0.8rem;color:#666;">- Coordonnees standardisees</div>
+                <div style="font-size:0.8rem;color:#666;">- Coordinates standardized</div>
                 <div style="font-size:0.8rem;color:#666;">- Date complete construite</div>
-                <div style="font-size:0.8rem;color:#666;">- Enrichi: heure, saison, jour_semaine</div>
+                <div style="font-size:0.8rem;color:#666;">- Enriched: hour, season, weekday</div>
             </div>
             <div style="background:white;border-radius:8px;padding:0.8rem;">
                 <div style="font-weight:600;">silver_lieux</div>
-                <div style="font-size:0.8rem;color:#666;">- Colonnes vides supprimees</div>
-                <div style="font-size:0.8rem;color:#666;">- VMA corrigees (valeurs aberrantes)</div>
+                <div style="font-size:0.8rem;color:#666;">- Columns vides supprimees</div>
+                <div style="font-size:0.8rem;color:#666;">- VMA corrected (outliers)</div>
                 <div style="font-size:0.8rem;color:#666;">- Codes surf normalises</div>
             </div>
             <div style="background:white;border-radius:8px;padding:0.8rem;">
                 <div style="font-weight:600;">silver_vehicules</div>
-                <div style="font-size:0.8rem;color:#666;">- Age impute par categorie</div>
-                <div style="font-size:0.8rem;color:#666;">- Age plafonne a 50 ans</div>
+                <div style="font-size:0.8rem;color:#666;">- Age imputed by category</div>
+                <div style="font-size:0.8rem;color:#666;">- Age capped at 50</div>
                 <div style="font-size:0.8rem;color:#666;">- CNIT flagge si manquant</div>
             </div>
         </div>
@@ -1061,12 +1027,12 @@ with tabs[4]:
 
     <div style="display:flex;justify-content:center;">
         <div style="background:#1a1a2e;color:white;padding:0.6rem 1.5rem;border-radius:8px;font-size:0.85rem;">
-            Construction du modele en etoile : Tables de faits + Dimensions
+            Star schema: Fact tables + Dimensions
         </div>
     </div>
 
     <div style="background:#d1fae5;border:2px solid #10b981;border-radius:12px;padding:1.5rem;">
-        <div style="font-size:1.2rem;font-weight:700;color:#065f46;margin-bottom:0.8rem;">COUCHE GOLD - Modele analytique (Star Schema)</div>
+        <div style="font-size:1.2rem;font-weight:700;color:#065f46;margin-bottom:0.8rem;">GOLD LAYER - Analytical model (Star Schema)</div>
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem;">
             <div style="background:white;border-radius:8px;padding:0.6rem;text-align:center;font-size:0.8rem;">
                 <strong>dim_date</strong><br>365 jours
@@ -1075,7 +1041,7 @@ with tabs[4]:
                 <strong>dim_time</strong><br>24 heures
             </div>
             <div style="background:white;border-radius:8px;padding:0.6rem;text-align:center;font-size:0.8rem;">
-                <strong>dim_location</strong><br>Departements
+                <strong>dim_location</strong><br>Departments
             </div>
             <div style="background:white;border-radius:8px;padding:0.6rem;text-align:center;font-size:0.8rem;">
                 <strong>dim_weather</strong><br>9 conditions
@@ -1094,7 +1060,7 @@ with tabs[4]:
             </div>
         </div>
         <div style="background:white;border-radius:8px;padding:1rem;margin-top:0.8rem;text-align:center;">
-            <strong>f_accidents</strong> (Table de faits) — 54 402 lignes<br>
+            <strong>f_accidents</strong> (Fact table) — 54 402 lignes<br>
             <span style="font-size:0.8rem;color:#666;">
             Keys: date_key + time_key + location_key + weather_key + lighting_key + collision_key + road_key<br>
             Measures: vehicle_count, severity_index
@@ -1108,7 +1074,7 @@ with tabs[4]:
 
     <div style="display:flex;justify-content:center;">
         <div style="background:#1a1a2e;color:white;padding:0.6rem 1.5rem;border-radius:8px;font-size:0.85rem;">
-            Consommation BI : Dashboards Power BI / Tableau / Streamlit
+            BI: Power BI / Tableau / Streamlit dashboards
         </div>
     </div>
 
@@ -1126,12 +1092,12 @@ with tabs[5]:
             report = f.read()
         st.markdown(report)
     else:
-        st.warning("Rapport non trouve.")
+        st.warning("Report not found.")
 
 # ── FOOTER ──
 st.markdown(f"""
 <div class="footer">
-    BAAC 2024 - Analyse de donnees - {AUTHOR} |
+    BAAC 2024 - Data Analysis - {AUTHOR} |
     <a href="https://github.com/BabaDLero/tp1-data-integration" target="_blank">Voir sur GitHub</a> |
     Juillet 2026
 </div>
