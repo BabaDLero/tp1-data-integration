@@ -272,30 +272,33 @@ st.markdown(f"""
 @st.cache_data(ttl=3600)
 def load_data():
     data_dir = os.path.join(os.path.dirname(__file__), 'data')
-    carac = pd.read_csv(os.path.join(data_dir, 'vehicules_2024.csv'), sep=';', encoding='latin1')
-    lieux = pd.read_csv(os.path.join(data_dir, 'usagers_2024.csv'), sep=';', encoding='latin1')
-    vehicules = pd.read_csv(os.path.join(data_dir, 'caracteristiques_2024.csv'), sep=';', encoding='latin1')
+    carac = pd.read_csv(os.path.join(data_dir, 'vehicules_2024.csv'), sep=';', encoding='utf-8')
+    lieux = pd.read_csv(os.path.join(data_dir, 'usagers_2024.csv'), sep=';', encoding='utf-8')
+    vehicules = pd.read_csv(os.path.join(data_dir, 'caracteristiques_2024.csv'), sep=';', encoding='utf-8')
 
-    # Rename columns to avoid encoding issues
-    carac_rename = {}
-    for c in carac.columns:
-        if 'Lettre Conventionnelle' in c: carac_rename[c] = 'Lettre_Conventionnelle_Vehicule'
-        elif 'Annee' in c or 'Ann' in c: carac_rename[c] = 'Annee'
-        elif 'Categorie' in c and 'vehicule' in c: carac_rename[c] = 'Categorie_vehicule'
-        elif 'Age' in c and 'vehicule' in c: carac_rename[c] = 'Age_vehicule'
-        elif 'Lieu Admin' in c: carac_rename[c] = 'Territoire'
-    if carac_rename:
-        carac = carac.rename(columns=carac_rename)
+    # Rename columns to avoid encoding issues (use unicode normalization)
+    import unicodedata
+    def normalize_key(name):
+        return unicodedata.normalize('NFKD', name).encode('ascii', 'ignore').decode('ascii').strip()
 
-    veh_rename = {}
-    for c in vehicules.columns:
-        if 'Lettre Conventionnelle' in c: veh_rename[c] = 'Lettre_Conventionnelle_Vehicule'
-        elif 'Annee' in c or 'Ann' in c: veh_rename[c] = 'Annee'
-        elif 'Categorie' in c and 'vehicule' in c: veh_rename[c] = 'Categorie_vehicule'
-        elif 'Age' in c and 'vehicule' in c: veh_rename[c] = 'Age_vehicule'
-        elif 'Lieu Admin' in c: veh_rename[c] = 'Territoire'
-    if veh_rename:
-        vehicules = vehicules.rename(columns=veh_rename)
+    def build_rename_map(df):
+        rename = {}
+        for c in df.columns:
+            key = normalize_key(c)
+            if 'Lettre Conventionnelle' in key or 'Lettre_Conventionnelle' in key:
+                rename[c] = 'Lettre_Conventionnelle_Vehicule'
+            elif 'Annee' in key or 'Ann' in key:
+                rename[c] = 'Annee'
+            elif 'Categorie' in key and 'vehicule' in key:
+                rename[c] = 'Categorie_vehicule'
+            elif 'Age' in key and 'vehicule' in key:
+                rename[c] = 'Age_vehicule'
+            elif 'Lieu Admin' in key or 'Territoire' in key:
+                rename[c] = 'Territoire'
+        return rename
+
+    carac = carac.rename(columns=build_rename_map(carac))
+    vehicules = vehicules.rename(columns=build_rename_map(vehicules))
 
     return carac, lieux, vehicules
 

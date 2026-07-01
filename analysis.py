@@ -12,9 +12,9 @@ data_dir = 'C:/Users/aurel/OneDrive/Documents/Data integration/tp1/data/'
 output_dir = 'C:/Users/aurel/OneDrive/Documents/Data integration/tp1/'
 
 # ── Load the 3 tables for 2024 ──
-carac = pd.read_csv(data_dir + 'vehicules_2024.csv', sep=';', encoding='latin1')
-lieux = pd.read_csv(data_dir + 'usagers_2024.csv', sep=';', encoding='latin1')
-vehicules = pd.read_csv(data_dir + 'caracteristiques_2024.csv', sep=';', encoding='latin1')
+carac = pd.read_csv(data_dir + 'vehicules_2024.csv', sep=';', encoding='utf-8')
+lieux = pd.read_csv(data_dir + 'usagers_2024.csv', sep=';', encoding='utf-8')
+vehicules = pd.read_csv(data_dir + 'caracteristiques_2024.csv', sep=';', encoding='utf-8')
 
 # ──────────────────────────────────────────────
 # PART 1: DATA PROFILING & DATA QUALITY ANALYSIS
