@@ -1,5 +1,5 @@
-# Data files (raw CSV)
-data/*.csv
+# Data files (raw CSV) - commented out: needed for Streamlit Cloud
+# data/*.csv
 
 # Python cache
 __pycache__/

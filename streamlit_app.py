@@ -986,23 +986,23 @@ with tabs[4]:
     st.markdown("""
     <div style="display:flex;flex-direction:column;gap:1rem;font-family:monospace;">
 
-    <div style="background:#fef3c7;border:2px solid #f59e0b;border-radius:12px;padding:1.5rem;">
-        <div style="font-size:1.2rem;font-weight:700;color:#92400e;margin-bottom:0.8rem;">BRONZE LAYER - Raw data</div>
+    <div style="background:#fde4cc;border:2px solid #b45309;border-radius:12px;padding:1.5rem;">
+        <div style="font-size:1.2rem;font-weight:700;color:#111827;margin-bottom:0.8rem;">BRONZE LAYER - Raw data</div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;">
             <div style="background:white;border-radius:8px;padding:0.8rem;text-align:center;">
                 <div style="font-weight:600;">caracteristiques.csv</div>
-                <div style="font-size:0.8rem;color:#666;">54 402 lignes</div>
-                <div style="font-size:0.8rem;color:#666;">15 colonnes</div>
+                <div style="font-size:0.8rem;color:#333;">54 402 lignes</div>
+                <div style="font-size:0.8rem;color:#333;">15 colonnes</div>
             </div>
             <div style="background:white;border-radius:8px;padding:0.8rem;text-align:center;">
                 <div style="font-weight:600;">lieux.csv</div>
-                <div style="font-size:0.8rem;color:#666;">70 248 lignes</div>
-                <div style="font-size:0.8rem;color:#666;">18 colonnes</div>
+                <div style="font-size:0.8rem;color:#333;">70 248 lignes</div>
+                <div style="font-size:0.8rem;color:#333;">18 colonnes</div>
             </div>
             <div style="background:white;border-radius:8px;padding:0.8rem;text-align:center;">
                 <div style="font-weight:600;">vehicules.csv</div>
-                <div style="font-size:0.8rem;color:#666;">83 730 lignes</div>
-                <div style="font-size:0.8rem;color:#666;">7 colonnes</div>
+                <div style="font-size:0.8rem;color:#333;">83 730 lignes</div>
+                <div style="font-size:0.8rem;color:#333;">7 colonnes</div>
             </div>
         </div>
         <div style="text-align:center;margin-top:0.8rem;">
@@ -1017,26 +1017,26 @@ with tabs[4]:
         </div>
     </div>
 
-    <div style="background:#dbeafe;border:2px solid #3b82f6;border-radius:12px;padding:1.5rem;">
-        <div style="font-size:1.2rem;font-weight:700;color:#1e40af;margin-bottom:0.8rem;">SILVER LAYER - Cleaned and enriched</div>
+    <div style="background:#f1f5f9;border:2px solid #64748b;border-radius:12px;padding:1.5rem;">
+        <div style="font-size:1.2rem;font-weight:700;color:#111827;margin-bottom:0.8rem;">SILVER LAYER - Cleaned and enriched</div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;">
             <div style="background:white;border-radius:8px;padding:0.8rem;">
                 <div style="font-weight:600;">silver_caracteristiques</div>
-                <div style="font-size:0.8rem;color:#666;">- Coordinates standardized</div>
-                <div style="font-size:0.8rem;color:#666;">- Date complete construite</div>
-                <div style="font-size:0.8rem;color:#666;">- Enriched: hour, season, weekday</div>
+                <div style="font-size:0.8rem;color:#333;">- Coordinates standardized</div>
+                <div style="font-size:0.8rem;color:#333;">- Date complete construite</div>
+                <div style="font-size:0.8rem;color:#333;">- Enriched: hour, season, weekday</div>
             </div>
             <div style="background:white;border-radius:8px;padding:0.8rem;">
                 <div style="font-weight:600;">silver_lieux</div>
-                <div style="font-size:0.8rem;color:#666;">- Columns vides supprimees</div>
-                <div style="font-size:0.8rem;color:#666;">- VMA corrected (outliers)</div>
-                <div style="font-size:0.8rem;color:#666;">- Codes surf normalises</div>
+                <div style="font-size:0.8rem;color:#333;">- Columns vides supprimees</div>
+                <div style="font-size:0.8rem;color:#333;">- VMA corrected (outliers)</div>
+                <div style="font-size:0.8rem;color:#333;">- Codes surf normalises</div>
             </div>
             <div style="background:white;border-radius:8px;padding:0.8rem;">
                 <div style="font-weight:600;">silver_vehicules</div>
-                <div style="font-size:0.8rem;color:#666;">- Age imputed by category</div>
-                <div style="font-size:0.8rem;color:#666;">- Age capped at 50</div>
-                <div style="font-size:0.8rem;color:#666;">- CNIT flagge si manquant</div>
+                <div style="font-size:0.8rem;color:#333;">- Age imputed by category</div>
+                <div style="font-size:0.8rem;color:#333;">- Age capped at 50</div>
+                <div style="font-size:0.8rem;color:#333;">- CNIT flagge si manquant</div>
             </div>
         </div>
         <div style="text-align:center;margin-top:0.8rem;">
@@ -1051,8 +1051,8 @@ with tabs[4]:
         </div>
     </div>
 
-    <div style="background:#d1fae5;border:2px solid #10b981;border-radius:12px;padding:1.5rem;">
-        <div style="font-size:1.2rem;font-weight:700;color:#065f46;margin-bottom:0.8rem;">GOLD LAYER - Analytical model (Star Schema)</div>
+    <div style="background:#fef9c3;border:2px solid #eab308;border-radius:12px;padding:1.5rem;">
+        <div style="font-size:1.2rem;font-weight:700;color:#111827;margin-bottom:0.8rem;">GOLD LAYER - Analytical model (Star Schema)</div>
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem;">
             <div style="background:white;border-radius:8px;padding:0.6rem;text-align:center;font-size:0.8rem;">
                 <strong>dim_date</strong><br>365 jours
@@ -1081,7 +1081,7 @@ with tabs[4]:
         </div>
         <div style="background:white;border-radius:8px;padding:1rem;margin-top:0.8rem;text-align:center;">
             <strong>f_accidents</strong> (Fact table) — 54 402 lignes<br>
-            <span style="font-size:0.8rem;color:#666;">
+            <span style="font-size:0.8rem;color:#333;">
             Keys: date_key + time_key + location_key + weather_key + lighting_key + collision_key + road_key<br>
             Measures: vehicle_count, severity_index
             </span>
